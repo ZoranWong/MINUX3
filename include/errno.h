@@ -16,11 +16,24 @@
  * will be defined, setting EPERM to (- 1), whereas when when this
  * file is included in an ordinary user program, EPERM has the value ( 1).
  */
+ // <errno.h>头文件定义程序执行期间可能发生的各种错误的编号。它们对用户程序可
+ // 见，应为小正整数。但是，它们也在MINIX中使用，它们必须为负值。例如，通过调
+ // 用do_read（）在内部执行系统调用READ。 此函数返回实际读取的（负）错误数或
+ //（正）字节数。
+
+ // 为了解决在系统内部具有负数和在外部具有正数的错误数的问题，使用以下机制。 
+ // 所有的定义都是以下形式：
+
+ // #define EPERM（_SIGN 1）
+ // 如果定义了宏_SYSTEM，则_SIGN设置为“ - ”，否则设置为“”。 因此，当编译操作
+ // 系统时，将定义宏_SYSTEM，将EPERM设置为（ - 1），而当该文件包括在普通用户
+ // 程序中时，EPERM具有值（1）。
 
 #ifndef _ERRNO_H		/* check if <errno.h> is already included */
 #define _ERRNO_H		/* it is not included; note that fact */
 
 /* Now define _SIGN as "" or "-" depending on _SYSTEM. */
+// 如果定义了宏_SYSTEM，则_SIGN设置为“ - ”，否则设置为“”。
 #ifdef _SYSTEM
 #   define _SIGN         -
 #   define OK            0
